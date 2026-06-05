@@ -3,7 +3,10 @@ package com.example.androidbeyond.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -27,47 +30,93 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(
+        Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(15.dp))
-                .width(110.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFE91E63),
-                contentColor = Color.Black,
-            ),
-            onClick = {}) {
-            Text(
-                text = "Kotlin",
-                fontWeight = FontWeight.ExtraBold,
-            )
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(15.dp))
+                    .width(110.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFE91E63),
+                    contentColor = Color.Black,
+                ),
+                onClick = {}) {
+                Text(
+                    text = "Kotlin",
+                    fontWeight = FontWeight.ExtraBold,
+                )
+            }
+            Button(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(15.dp))
+                    .width(110.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF4CAF50),
+                    contentColor = Color.Black,
+                ),
+                onClick = {}) {
+                Text(
+                    text = "Android",
+                    fontWeight = FontWeight.ExtraBold,
+                )
+            }
+            Button(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(15.dp))
+                    .width(110.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF9800),
+                    contentColor = Color.Black,
+                ),
+                onClick = {}) {
+                Text(
+                    text = "Compose",
+                    fontWeight = FontWeight.ExtraBold,
+                )
+            }
         }
-        Button(
+        Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(15.dp))
-                .width(110.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF4CAF50),
-                contentColor = Color.Black,
-            ),
-            onClick = {}) {
-            Text(
-                text = "Android",
-                fontWeight = FontWeight.ExtraBold,
-            )
-        }
-        Button(
-            modifier = Modifier
-                .clip(RoundedCornerShape(15.dp))
-                .width(110.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFFF9800),
-                contentColor = Color.Black,
-            ),
-            onClick = {}) {
-            Text(
-                text = "Compose",
-                fontWeight = FontWeight.ExtraBold,
-            )
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+
+            Button(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(15.dp))
+                    .width(110.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF2196F3),
+                    contentColor = Color.Black,
+                ),
+                onClick = {}) {
+                Text(
+                    text = "Retrofit",
+                    fontWeight = FontWeight.ExtraBold,
+                )
+            }
+
+            Button(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(15.dp))
+                    .width(110.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF9C27B0),
+                    contentColor = Color.Black,
+                ),
+                onClick = {}) {
+                Text(
+                    text = "Ktor",
+                    fontWeight = FontWeight.ExtraBold,
+                )
+            }
         }
     }
 }
