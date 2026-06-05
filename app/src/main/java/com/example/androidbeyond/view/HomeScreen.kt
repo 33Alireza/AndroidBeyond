@@ -2,6 +2,7 @@ package com.example.androidbeyond.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -116,6 +117,37 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     text = "Ktor",
                     fontWeight = FontWeight.ExtraBold,
                 )
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+
+            Button(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(15.dp))
+                    .width(200.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFFEB3B),
+                    contentColor = Color.Black,
+                ),
+                onClick = {}) {
+                Box {
+
+                    Text(
+                        modifier = Modifier.padding(horizontal = 50.dp),
+                        text = "Dagger",
+                        fontWeight = FontWeight.ExtraBold,
+                    )
+                    Text(
+                        text = "Koin",
+                        fontWeight = FontWeight.ExtraBold,
+                    )
+                }
             }
         }
     }
