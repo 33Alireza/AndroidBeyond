@@ -1,10 +1,16 @@
 package com.example.androidbeyond.view
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -14,15 +20,55 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
-    Button(
-        modifier = modifier.clip(RoundedCornerShape(15.dp)), colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFE91E63),
-            contentColor = Color.Black,
-        ), onClick = {}) {
-        Text(
-            text = "Kotlin",
-            fontWeight = FontWeight.ExtraBold,
-        )
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            modifier = Modifier
+                .clip(RoundedCornerShape(15.dp))
+                .width(110.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFE91E63),
+                contentColor = Color.Black,
+            ),
+            onClick = {}) {
+            Text(
+                text = "Kotlin",
+                fontWeight = FontWeight.ExtraBold,
+            )
+        }
+        Button(
+            modifier = Modifier
+                .clip(RoundedCornerShape(15.dp))
+                .width(110.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF4CAF50),
+                contentColor = Color.Black,
+            ),
+            onClick = {}) {
+            Text(
+                text = "Android",
+                fontWeight = FontWeight.ExtraBold,
+            )
+        }
+        Button(
+            modifier = Modifier
+                .clip(RoundedCornerShape(15.dp))
+                .width(110.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFF9800),
+                contentColor = Color.Black,
+            ),
+            onClick = {}) {
+            Text(
+                text = "Compose",
+                fontWeight = FontWeight.ExtraBold,
+            )
+        }
     }
 }
 
