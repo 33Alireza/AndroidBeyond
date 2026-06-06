@@ -33,25 +33,34 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = number.toString(), color = Color.White, fontWeight = FontWeight.Black
-        )
-        Button(
-            modifier = Modifier
-                .clip(RoundedCornerShape(15.dp))
-                .width(110.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFFF5722),
-                contentColor = Color.Black,
-            ),
-            onClick = {
+        StateLessCounterComponent(
+            number = number, onClick = {
                 number += 1
-            }) {
-            Text(
-                text = "Click",
-                fontWeight = FontWeight.ExtraBold,
-            )
-        }
+            })
+    }
+}
+
+@Composable
+fun StateLessCounterComponent(
+    number: Int, onClick: () -> Unit
+) {
+    Text(
+        text = number.toString(), color = Color.White, fontWeight = FontWeight.Black
+    )
+    Button(
+        modifier = Modifier
+            .clip(RoundedCornerShape(15.dp))
+            .width(110.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFFFF5722),
+            contentColor = Color.Black,
+        ),
+        onClick = onClick
+    ) {
+        Text(
+            text = "Click",
+            fontWeight = FontWeight.ExtraBold,
+        )
     }
 }
 
