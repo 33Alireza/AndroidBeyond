@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -71,7 +71,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        LazyColumn {
+        LazyRow {
             items(moviesList) { movie ->
                 Card(
                     modifier = Modifier, colors = CardDefaults.cardColors(
@@ -82,7 +82,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         text = movie, fontWeight = FontWeight.ExtraBold, fontSize = 30.sp
                     )
                 }
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.width(20.dp))
             }
         }
     }
