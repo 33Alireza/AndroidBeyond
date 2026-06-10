@@ -13,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -127,21 +129,33 @@ fun HomeScreen() {
             else musicList.filter { it.bandOrSinger == selectedMusician })
     }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(modifier = Modifier.padding(horizontal = 20.dp), title = {
-                Text("Aradd")
-            }, navigationIcon = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = null
-                )
-            }, actions = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null
-                )
-            })
-        }) { innerPadding ->
+    Scaffold(topBar = {
+        CenterAlignedTopAppBar(modifier = Modifier.padding(horizontal = 20.dp), title = {
+            Text("Aradd")
+        }, navigationIcon = {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                contentDescription = null
+            )
+        }, actions = {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null
+            )
+        })
+    }, floatingActionButton = {
+        Button(
+            modifier = Modifier.clip(RoundedCornerShape(100)),
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFE91E63)
+            )
+        ) {
+            Text(
+                text = "Go!", fontWeight = FontWeight.ExtraBold, color = Color(0xFFFFFFFF)
+            )
+
+        }
+    }) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
