@@ -179,7 +179,13 @@ fun HomeScreen() {
                                 else -> musician
                             }
                         },
-                        label = { Text(musician) },
+                        label = {
+                            Text(
+                                text = musician,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = Color(0xFFFFFFFF),
+                            )
+                        },
                         colors = FilterChipDefaults.filterChipColors(
                             containerColor = Color.Transparent,
                             disabledContainerColor = Color.Transparent,
