@@ -14,6 +14,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen() {
     var selectedMusician by rememberSaveable { mutableStateOf<String?>(null) }
 
     val musicList = remember {
@@ -118,52 +119,57 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             if (selectedMusician == null || selectedMusician == "All") musicList
             else musicList.filter { it.bandOrSinger == selectedMusician })
     }
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(20.dp), horizontalAlignment = Alignment.Start
-    ) {
-        LazyRow(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items(musicianList) { musician ->
-                val isSelected =
-                    (musician == "All" && selectedMusician == null) || musician == selectedMusician
-                FilterChip(
-                    modifier = Modifier.clip(RoundedCornerShape(20.dp)),
-                    selected = isSelected,
-                    onClick = {
-                        selectedMusician = when (musician) {
-                            "All" -> null
-                            selectedMusician -> null
-                            else -> musician
-                        }
-                    },
-                    label = { Text(musician) },
-                    colors = FilterChipDefaults.filterChipColors(
-                        containerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        selectedContainerColor = colorsList.random(),
-                    ),
-                    border = null
-                )
-            }
-        }
 
-        LazyColumn {
-            items(filteredList) { music ->
-                Card(
-                    modifier = Modifier, colors = CardDefaults.cardColors(
-                        containerColor = colorsList.random()
-                    )
-                ) {
-                    Text(
-                        text = "${music.name} -> ${music.bandOrSinger}",
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 20.sp
+    Scaffold { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(20.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            LazyRow(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(musicianList) { musician ->
+                    val isSelected =
+                        (musician == "All" && selectedMusician == null) || musician == selectedMusician
+                    FilterChip(
+                        modifier = Modifier.clip(RoundedCornerShape(20.dp)),
+                        selected = isSelected,
+                        onClick = {
+                            selectedMusician = when (musician) {
+                                "All" -> null
+                                selectedMusician -> null
+                                else -> musician
+                            }
+                        },
+                        label = { Text(musician) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            containerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            selectedContainerColor = colorsList.random(),
+                        ),
+                        border = null
                     )
                 }
-                Spacer(Modifier.height(20.dp))
+            }
+
+            LazyColumn {
+                items(filteredList) { music ->
+                    Card(
+                        modifier = Modifier, colors = CardDefaults.cardColors(
+                            containerColor = colorsList.random()
+                        )
+                    ) {
+                        Text(
+                            text = "${music.name} -> ${music.bandOrSinger}",
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 20.sp
+                        )
+                    }
+                    Spacer(Modifier.height(20.dp))
+                }
             }
         }
     }
