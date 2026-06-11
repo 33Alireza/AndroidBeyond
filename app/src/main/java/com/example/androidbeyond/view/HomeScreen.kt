@@ -13,6 +13,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -22,6 +25,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -29,6 +34,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -38,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,6 +59,14 @@ fun HomeScreen() {
     val snackBarActioLabel = "Retry"
     // Following solution is not ideal, and it's just a simple example
     val coroutineScope = rememberCoroutineScope()
+
+    val bottomBarItems: List<Pair<String, ImageVector>> = listOf(
+        "Home" to Icons.Filled.Home,
+        "Search" to Icons.Filled.Search,
+        "Profile" to Icons.Filled.Person,
+    )
+
+    var selectedBottomIndex by rememberSaveable { mutableIntStateOf(0) }
 
     val musicList = remember {
         mutableListOf(
@@ -172,6 +187,18 @@ fun HomeScreen() {
                     text = "Go!", fontWeight = FontWeight.ExtraBold, color = Color(0xFFFFFFFF)
                 )
 
+            }
+        },
+        bottomBar = {
+            NavigationBar {
+                bottomBarItems.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        selected = selectedBottomIndex == index,
+                        onClick = { selectedBottomIndex = index },
+                        icon = { Icon(item.second, contentDescription = item.first) },
+                        label = { Text(item.first) }
+                    )
+                }
             }
         },
         snackbarHost = { SnackbarHost(snackBarHost) }
