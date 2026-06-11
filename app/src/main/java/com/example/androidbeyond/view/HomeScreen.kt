@@ -23,11 +23,15 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -38,11 +42,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
     var selectedMusician by rememberSaveable { mutableStateOf<String?>(null) }
+    val snackBarHost = remember { SnackbarHostState() }
+    val snackBarActioLabel = "Retry"
+    // Following solution is not ideal, and it's just a simple example
+    val coroutineScope = rememberCoroutineScope()
 
     val musicList = remember {
         mutableListOf(
@@ -129,33 +138,44 @@ fun HomeScreen() {
             else musicList.filter { it.bandOrSinger == selectedMusician })
     }
 
-    Scaffold(topBar = {
-        CenterAlignedTopAppBar(modifier = Modifier.padding(horizontal = 20.dp), title = {
-            Text("Aradd")
-        }, navigationIcon = {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = null
-            )
-        }, actions = {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null
-            )
-        })
-    }, floatingActionButton = {
-        Button(
-            modifier = Modifier.clip(RoundedCornerShape(100)),
-            onClick = {},
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFE91E63)
-            )
-        ) {
-            Text(
-                text = "Go!", fontWeight = FontWeight.ExtraBold, color = Color(0xFFFFFFFF)
-            )
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(modifier = Modifier.padding(horizontal = 20.dp), title = {
+                Text("Aradd")
+            }, navigationIcon = {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    contentDescription = null
+                )
+            }, actions = {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null
+                )
+            })
+        }, floatingActionButton = {
+            Button(
+                modifier = Modifier.clip(RoundedCornerShape(100)),
+                onClick = {
+                    coroutineScope.launch {
+                        snackBarHost.showSnackbar(
+                            message = "Yo!",
+                            duration = SnackbarDuration.Short,
+                            actionLabel = snackBarActioLabel,
+                        )
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFE91E63)
+                )
+            ) {
+                Text(
+                    text = "Go!", fontWeight = FontWeight.ExtraBold, color = Color(0xFFFFFFFF)
+                )
 
-        }
-    }) { innerPadding ->
+            }
+        },
+        snackbarHost = { SnackbarHost(snackBarHost) }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
