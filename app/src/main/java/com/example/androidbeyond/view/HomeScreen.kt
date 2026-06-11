@@ -1,5 +1,6 @@
 package com.example.androidbeyond.view
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,6 +61,7 @@ fun HomeScreen() {
     val snackBarActioLabel = "Retry"
     // Following solution is not ideal, and it's just a simple example
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val bottomBarItems: List<Pair<String, ImageVector>> = listOf(
         "Home" to Icons.Filled.Home,
@@ -153,56 +156,50 @@ fun HomeScreen() {
             else musicList.filter { it.bandOrSinger == selectedMusician })
     }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(modifier = Modifier.padding(horizontal = 20.dp), title = {
-                Text("Aradd")
-            }, navigationIcon = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                    contentDescription = null
-                )
-            }, actions = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null
-                )
-            })
-        }, floatingActionButton = {
-            Button(
-                modifier = Modifier.clip(RoundedCornerShape(100)),
-                onClick = {
-                    coroutineScope.launch {
-                        snackBarHost.showSnackbar(
-                            message = "Yo!",
-                            duration = SnackbarDuration.Short,
-                            actionLabel = snackBarActioLabel,
-                        )
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFE91E63)
-                )
-            ) {
-                Text(
-                    text = "Go!", fontWeight = FontWeight.ExtraBold, color = Color(0xFFFFFFFF)
-                )
-
-            }
-        },
-        bottomBar = {
-            NavigationBar {
-                bottomBarItems.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        selected = selectedBottomIndex == index,
-                        onClick = { selectedBottomIndex = index },
-                        icon = { Icon(item.second, contentDescription = item.first) },
-                        label = { Text(item.first) }
+    Scaffold(topBar = {
+        CenterAlignedTopAppBar(modifier = Modifier.padding(horizontal = 20.dp), title = {
+            Text("Aradd")
+        }, navigationIcon = {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                contentDescription = null
+            )
+        }, actions = {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ExitToApp, contentDescription = null
+            )
+        })
+    }, floatingActionButton = {
+        Button(
+            modifier = Modifier.clip(RoundedCornerShape(100)), onClick = {
+                coroutineScope.launch {
+                    snackBarHost.showSnackbar(
+                        message = "Yo!",
+                        duration = SnackbarDuration.Short,
+                        actionLabel = snackBarActioLabel,
                     )
                 }
+                Toast.makeText(context, "Hey", Toast.LENGTH_SHORT).show()
+            }, colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFE91E63)
+            )
+        ) {
+            Text(
+                text = "Go!", fontWeight = FontWeight.ExtraBold, color = Color(0xFFFFFFFF)
+            )
+
+        }
+    }, bottomBar = {
+        NavigationBar {
+            bottomBarItems.forEachIndexed { index, item ->
+                NavigationBarItem(
+                    selected = selectedBottomIndex == index,
+                    onClick = { selectedBottomIndex = index },
+                    icon = { Icon(item.second, contentDescription = item.first) },
+                    label = { Text(item.first) })
             }
-        },
-        snackbarHost = { SnackbarHost(snackBarHost) }
-    ) { innerPadding ->
+        }
+    }, snackbarHost = { SnackbarHost(snackBarHost) }) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
