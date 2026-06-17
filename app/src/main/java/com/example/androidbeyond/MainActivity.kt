@@ -35,4 +35,9 @@ class MainActivity : ComponentActivity() {
         super.onPause()
         println("onPause()")
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        println("onRestart()")
+    }
 }
