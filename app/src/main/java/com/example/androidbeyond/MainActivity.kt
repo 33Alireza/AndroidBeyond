@@ -21,9 +21,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        println("onStop()")
+    override fun onStart() {
+        super.onStart()
+        println("onStart()")
     }
 
     override fun onResume() {
@@ -34,6 +34,11 @@ class MainActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         println("onPause()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        println("onStop()")
     }
 
     override fun onRestart() {
