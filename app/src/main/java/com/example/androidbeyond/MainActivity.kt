@@ -40,4 +40,9 @@ class MainActivity : ComponentActivity() {
         super.onRestart()
         println("onRestart()")
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        println("onDestroy()")
+    }
 }
