@@ -16,8 +16,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AndroidBeyondTheme {
-                    HomeScreen()
+                HomeScreen()
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        println("onStop()")
     }
 }
