@@ -10,6 +10,7 @@ import com.example.androidbeyond.view.HomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        println("onCreate()")
         super.onCreate(savedInstanceState)
         installSplashScreen()
         enableEdgeToEdge()
