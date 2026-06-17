@@ -30,4 +30,9 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         println("onResume()")
     }
+
+    override fun onPause() {
+        super.onPause()
+        println("onPause()")
+    }
 }
