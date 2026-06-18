@@ -1,5 +1,6 @@
 package com.example.androidbeyond
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 import com.example.androidbeyond.view.HomeScreen
+import androidx.core.net.toUri
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,6 +16,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         enableEdgeToEdge()
+        val uri = "android.resource://$packageName/drawable/ic_launcher_background.xml".toUri()
+        val launcherBytes = contentResolver.openInputStream(uri)?.use { it.readBytes() }
+        println(launcherBytes.toString())
         setContent {
             AndroidBeyondTheme {
                 HomeScreen()
