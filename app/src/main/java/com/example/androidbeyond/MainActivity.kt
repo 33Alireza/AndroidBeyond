@@ -1,5 +1,6 @@
 package com.example.androidbeyond
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -29,6 +30,8 @@ class MainActivity : ComponentActivity() {
             it.write(launcherBytes)
         }
         println(file.toUri())
+
+        val dataUri = "data:text/plain;charset=UTF-8,Hello%20World".toUri()
 
         setContent {
             AndroidBeyondTheme {
