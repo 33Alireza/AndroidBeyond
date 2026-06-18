@@ -2,8 +2,10 @@ package com.example.androidbeyond
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 import com.example.androidbeyond.view.HomeScreen
@@ -26,10 +28,16 @@ class MainActivity : ComponentActivity() {
         FileOutputStream(file).use {
             it.write(launcherBytes)
         }
-
         println(file.toUri())
+
         setContent {
             AndroidBeyondTheme {
+                val pickImage = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.GetContent(),
+                    onResult = { contentUri ->
+                        println(contentUri)
+                    }
+                )
                 HomeScreen()
             }
         }
