@@ -11,6 +11,7 @@ import com.example.androidbeyond.view.HomeScreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        resources.getDrawable(R.drawable.ic_launcher_foreground)
         installSplashScreen()
         enableEdgeToEdge()
         setContent {
