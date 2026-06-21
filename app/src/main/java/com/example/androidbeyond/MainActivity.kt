@@ -1,7 +1,5 @@
 package com.example.androidbeyond
 
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,18 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.androidbeyond.broadcast.AiPlaneModeReceiver
 import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 
 class MainActivity : ComponentActivity() {
-
-    private val airPlaneModeReceiver = AiPlaneModeReceiver()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        registerReceiver(
-            airPlaneModeReceiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-        )
         installSplashScreen()
         enableEdgeToEdge()
         setContent {
@@ -41,10 +32,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(airPlaneModeReceiver)
     }
 }
