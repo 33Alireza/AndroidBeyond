@@ -1,5 +1,6 @@
 package com.example.androidbeyond
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -29,8 +30,16 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Button(
                         onClick = {
-                            Intent(applicationContext, SecondActivity::class.java).also {
+                            /*Intent(applicationContext, SecondActivity::class.java).also {
                                 startActivity(it)
+                            }*/
+                            Intent(Intent.ACTION_MAIN).also {
+                                it.`package` = "com.google.android.youtube"
+                                try {
+                                    startActivity(it)
+                                } catch (e: ActivityNotFoundException) {
+                                    e.printStackTrace()
+                                }
                             }
                         }) {
                         Text("Click Me")
