@@ -1,6 +1,5 @@
 package com.example.androidbeyond
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -33,13 +32,22 @@ class MainActivity : ComponentActivity() {
                             /*Intent(applicationContext, SecondActivity::class.java).also {
                                 startActivity(it)
                             }*/
-                            Intent(Intent.ACTION_MAIN).also {
+                            /*Intent(Intent.ACTION_MAIN).also {
                                 it.`package` = "com.google.android.youtube"
                                 try {
                                     startActivity(it)
                                 } catch (e: ActivityNotFoundException) {
                                     e.printStackTrace()
                                 }
+                            }*/
+                            val intent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_EMAIL, arrayOf("test@test.com"))
+                                putExtra(Intent.EXTRA_SUBJECT, arrayOf("Subject"))
+                                putExtra(Intent.EXTRA_TEXT, arrayOf("Yo!"))
+                            }
+                            if (intent.resolveActivity(packageManager) != null) {
+                                startActivity(intent)
                             }
                         }) {
                         Text("Click Me")
