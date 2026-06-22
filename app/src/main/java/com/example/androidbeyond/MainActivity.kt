@@ -1,16 +1,17 @@
 package com.example.androidbeyond
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 
@@ -26,9 +27,14 @@ class MainActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.metallica), contentDescription = null
-                    )
+                    Button(
+                        onClick = {
+                            Intent(applicationContext, SecondActivity::class.java).also {
+                                startActivity(it)
+                            }
+                        }) {
+                        Text("Click Me")
+                    }
                 }
             }
         }
