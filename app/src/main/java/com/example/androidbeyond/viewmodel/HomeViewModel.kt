@@ -1,15 +1,13 @@
 package com.example.androidbeyond.viewmodel
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class HomeViewModel : ViewModel() {
 
-    var backgroundColor by mutableStateOf(Color.White)
+    var backgroundColor = MutableStateFlow(Color.White)
         private set
 
     private val colors = mutableStateListOf(
@@ -32,7 +30,7 @@ class HomeViewModel : ViewModel() {
     )
 
     fun changeBackground() {
-        backgroundColor = colors.random()
+        backgroundColor.value = colors.random()
     }
 
 }
