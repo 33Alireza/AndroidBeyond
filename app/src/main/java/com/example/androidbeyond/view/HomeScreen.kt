@@ -16,10 +16,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.androidbeyond.viewmodel.HomeViewModel
 
 @Composable
-fun HomeScreen() {
-
-    val homeViewModel = HomeViewModel()
-
+fun HomeScreen(
+    homeViewModel: HomeViewModel = viewModel(),
+) {
     Scaffold(
         modifier = Modifier.background(homeViewModel.backgroundColor.collectAsStateWithLifecycle().value)
     ) {
