@@ -5,14 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androidbeyond.viewmodel.HomeViewModel
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun HomeScreen(
@@ -27,9 +25,14 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel(),
 ) {
     val color = homeViewModel.backgroundColor.collectAsStateWithLifecycle().value
-    var launchedEffectState by remember { mutableIntStateOf(0) }
 
-    LaunchedEffect(launchedEffectState) {
+    SideEffect {
+        // non-suspend method
+        homeViewModel.changeColor()
+    }
+
+    LaunchedEffect(Unit) {
+        delay(5000L.milliseconds)
         homeViewModel.changeColor()
     }
 
@@ -41,13 +44,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(
-            onClick = {
-                launchedEffectState += 1
-            }
-        ) {
-            Text("Yo!")
-        }
+        Text("Yo!")
     }
 }
 
