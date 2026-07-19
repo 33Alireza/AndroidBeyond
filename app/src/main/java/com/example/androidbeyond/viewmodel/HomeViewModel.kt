@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.math.BigInteger
 
 class HomeViewModel : ViewModel() {
@@ -14,9 +15,11 @@ class HomeViewModel : ViewModel() {
         private set
 
     fun initialCounter() {
-        viewModelScope.launch(Dispatchers.Default) {
-            while (true) {
-                counterValue += counterValue
+        viewModelScope.launch {
+            withContext(Dispatchers.Default) {
+                while (true) {
+                    counterValue += counterValue
+                }
             }
         }
     }
