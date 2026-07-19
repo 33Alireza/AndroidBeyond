@@ -5,9 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class HomeViewModel : ViewModel() {
-    var backgroundColor by mutableStateOf(Color.White)
+    private var _flowBackgroundColor = MutableStateFlow(Color.White)
+    val flowBackgroundColor = _flowBackgroundColor.asStateFlow()
+
+    var composeBackgroundColor by mutableStateOf(Color.White)
         private set
 
     private val colorsList = listOf(
@@ -18,6 +23,7 @@ class HomeViewModel : ViewModel() {
     )
 
     fun changeColor() {
-        backgroundColor = colorsList.random()
+        _flowBackgroundColor.value = colorsList.random()
+        composeBackgroundColor = colorsList.random()
     }
 }
