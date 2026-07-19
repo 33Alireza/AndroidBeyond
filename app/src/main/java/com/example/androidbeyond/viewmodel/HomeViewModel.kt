@@ -1,26 +1,23 @@
 package com.example.androidbeyond.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.math.BigInteger
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class HomeViewModel : ViewModel() {
-    var counterValue: BigInteger by mutableStateOf(BigInteger.ONE)
-        private set
 
-    fun initialCounter() {
-        viewModelScope.launch {
-            withContext(Dispatchers.Default) {
-                while (true) {
-                    counterValue += counterValue
-                }
-            }
-        }
+    private var _backgroundColor = MutableStateFlow(Color.White)
+    val backgroundColor = _backgroundColor.asStateFlow()
+
+    private val colorsList = listOf(
+        Color(0xFFE91E63),
+        Color(0xFF2196F3),
+        Color(0xFFFF9800),
+        Color(0xFF4CAF50),
+    )
+
+    fun changeColor() {
+        _backgroundColor.value = colorsList.random()
     }
 }
