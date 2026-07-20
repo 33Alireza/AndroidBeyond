@@ -25,7 +25,7 @@ fun HomeScreen(
 ) {
     var number by retain { mutableIntStateOf(0) }
 
-    RetainedEffect(Unit) {
+    RetainedEffect(number) {
         onRetire {
             println("Retained happened!")
         }
