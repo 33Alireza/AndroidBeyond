@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.retain.RetainedEffect
 import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,6 +25,11 @@ fun HomeScreen(
 ) {
     var number by retain { mutableIntStateOf(0) }
 
+    RetainedEffect(Unit) {
+        onRetire {
+            println("Retained happened!")
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
