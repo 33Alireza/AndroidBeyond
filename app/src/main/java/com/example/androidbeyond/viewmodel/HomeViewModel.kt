@@ -5,11 +5,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class HomeViewModel : ViewModel() {
-    // correct version
-    private val _numberOne = MutableStateFlow(3)
-    val numberOne = _numberOne.asStateFlow()
+    private var _number = MutableStateFlow(0)
+    val number = _number.asStateFlow()
 
-    // wrong version
-    var numberTwo = MutableStateFlow(4)
-        private set
+    fun increaseNumber() {
+        _number.value += 1
+    }
 }

@@ -13,9 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androidbeyond.viewmodel.HomeViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -23,7 +23,9 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = viewModel(),
 ) {
-    DisposableEffect(Unit) {
+    val number = homeViewModel.number.collectAsStateWithLifecycle()
+
+    DisposableEffect(number) {
         println("Composition happened!")
         onDispose {
             println("Decomposition happened!")
@@ -37,20 +39,7 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            onClick = {
-                try {
-                    (homeViewModel.numberOne as MutableStateFlow).value = 6
-                    println("number one casted successfully")
-                } catch (_: Exception) {
-                    println("number one was not able to cast")
-                }
-                try {
-                    homeViewModel.numberTwo.value = 8
-                    println("number two casted successfully")
-                } catch (_: Exception) {
-                    println("number two was not able to cast")
-                }
-            }) {
+            onClick = { homeViewModel.increaseNumber() }) {
             Text("Yo!")
         }
     }
