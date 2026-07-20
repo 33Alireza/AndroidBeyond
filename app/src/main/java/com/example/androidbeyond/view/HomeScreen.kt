@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +23,12 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = viewModel(),
 ) {
+    DisposableEffect(Unit) {
+        println("Composition happened!")
+        onDispose {
+            println("Decomposition happened!")
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -38,7 +45,7 @@ fun HomeScreen(
                     println("number one was not able to cast")
                 }
                 try {
-                    (homeViewModel.numberTwo as MutableStateFlow).value = 8
+                    homeViewModel.numberTwo.value = 8
                     println("number two casted successfully")
                 } catch (_: Exception) {
                     println("number two was not able to cast")
