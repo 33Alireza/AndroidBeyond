@@ -1,9 +1,10 @@
 package com.example.androidbeyond.view
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.keyframes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -28,9 +29,12 @@ fun HomeScreen(
     var sizeState by remember { mutableStateOf(200.dp) }
     val size by animateDpAsState(
         targetValue = sizeState,
-        spring(
-            Spring.DampingRatioHighBouncy,
-        )
+        keyframes {
+            durationMillis = 5000
+            sizeState at 0 using LinearEasing
+            sizeState * 1.5f at 1000 using FastOutLinearInEasing
+            sizeState * 2f at 5000
+        }
     )
 
     Box(
