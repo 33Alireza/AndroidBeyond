@@ -1,5 +1,7 @@
 package com.example.androidbeyond
 
+import android.app.ComponentCaller
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,7 +13,8 @@ import androidx.lifecycle.LifecycleOwner
 import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 import com.example.androidbeyond.view.HomeScreen
 
-class MainActivity : ComponentActivity(), AnalyticsLogger by AnalyticsLoggerImpl() {
+class MainActivity : ComponentActivity(), AnalyticsLogger by AnalyticsLoggerImpl(),
+    DeepLinkHandler by DeepLinkHandlerImpl() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerLifecycleOwner(this)
@@ -23,6 +26,19 @@ class MainActivity : ComponentActivity(), AnalyticsLogger by AnalyticsLoggerImpl
             }
         }
     }
+
+    override fun onNewIntent(intent: Intent, caller: ComponentCaller) {
+        super.onNewIntent(intent, caller)
+        handleDeepLink(this, intent)
+    }
+}
+
+interface DeepLinkHandler {
+    fun handleDeepLink(activity: ComponentActivity, intent: Intent?)
+}
+
+class DeepLinkHandlerImpl : DeepLinkHandler {
+    override fun handleDeepLink(activity: ComponentActivity, intent: Intent?) {}
 }
 
 interface AnalyticsLogger {
