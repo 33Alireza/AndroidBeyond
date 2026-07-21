@@ -1,6 +1,7 @@
 package com.example.androidbeyond.view
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -23,10 +24,13 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
     var sizeState by remember { mutableStateOf(200.dp) }
+    val size by animateDpAsState(
+        targetValue = sizeState
+    )
 
     Box(
         modifier = modifier
-            .size(sizeState)
+            .size(size)
             .background(Color.Red),
         contentAlignment = Alignment.Center
     ) {
