@@ -1,23 +1,22 @@
 package com.example.androidbeyond
 
-import android.app.ComponentCaller
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 import com.example.androidbeyond.view.HomeScreen
+import kotlin.reflect.KProperty
 
-class MainActivity : ComponentActivity(), AnalyticsLogger by AnalyticsLoggerImpl(),
-    DeepLinkHandler by DeepLinkHandlerImpl() {
+class MainActivity : ComponentActivity() {
+    private val obj by MyLazy {
+        println("Hello, World!")
+        3
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        registerLifecycleOwner(this)
         installSplashScreen()
         enableEdgeToEdge()
         setContent {
@@ -25,37 +24,19 @@ class MainActivity : ComponentActivity(), AnalyticsLogger by AnalyticsLoggerImpl
                 HomeScreen()
             }
         }
-    }
-
-    override fun onNewIntent(intent: Intent, caller: ComponentCaller) {
-        super.onNewIntent(intent, caller)
-        handleDeepLink(this, intent)
+        println(obj)
     }
 }
 
-interface DeepLinkHandler {
-    fun handleDeepLink(activity: ComponentActivity, intent: Intent?)
-}
+class MyLazy<out T : Any>(
+    private var initialize: () -> T
+) {
+    private var value: T? = null
 
-class DeepLinkHandlerImpl : DeepLinkHandler {
-    override fun handleDeepLink(activity: ComponentActivity, intent: Intent?) {}
-}
-
-interface AnalyticsLogger {
-    fun registerLifecycleOwner(owner: LifecycleOwner)
-}
-
-class AnalyticsLoggerImpl : AnalyticsLogger, LifecycleEventObserver {
-
-    override fun registerLifecycleOwner(owner: LifecycleOwner) {
-        owner.lifecycle.addObserver(this)
-    }
-
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-        when (event) {
-            Lifecycle.Event.ON_START -> println("User opened the screen")
-            Lifecycle.Event.ON_PAUSE -> println("User leaved the screen")
-            else -> Unit
-        }
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
+        return if (value == null) {
+            value = initialize()
+            value!!
+        } else value!!
     }
 }
