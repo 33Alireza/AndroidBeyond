@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 import com.example.androidbeyond.view.HomeScreen
+import kotlin.concurrent.thread
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +20,11 @@ class MainActivity : ComponentActivity() {
             }
         }
         println("Start")
-        blockingCode()
+        thread {
+            println("Thread start")
+            blockingCode()
+            println("Thread end")
+        }
         println("End")
     }
 }
