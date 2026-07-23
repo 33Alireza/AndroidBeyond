@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainActivity : ComponentActivity() {
@@ -26,18 +25,22 @@ class MainActivity : ComponentActivity() {
         }
         CoroutineScope(Dispatchers.Main).launch {
             println("We're starting to cook")
-            cookRice()
-            println("We're done with the rice")
-            cookChicken()
-            println("We're done with the dish")
+            launch {
+                cookRice()
+                println("We're done with the rice")
+            }
+            launch {
+                cookChicken()
+                println("We're done with the dish")
+            }
         }
     }
 }
 
-suspend fun cookRice(){
+suspend fun cookRice() {
     delay(3000L.milliseconds)
 }
 
-suspend fun cookChicken(){
+suspend fun cookChicken() {
     delay(4000L.milliseconds)
 }
