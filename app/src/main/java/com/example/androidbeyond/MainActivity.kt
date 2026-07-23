@@ -9,8 +9,10 @@ import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 import com.example.androidbeyond.view.HomeScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
+import kotlin.time.Duration.Companion.milliseconds
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,20 +24,20 @@ class MainActivity : ComponentActivity() {
                 HomeScreen()
             }
         }
-        println("Start")
         CoroutineScope(Dispatchers.Main).launch {
-            suspendingCode()
+            println("We're starting to cook")
+            cookRice()
+            println("We're done with the rice")
+            cookChicken()
+            println("We're done with the dish")
         }
-        println("End")
     }
 }
 
-fun blockingCode() {
-    (1..50_000_000).forEach { it * it }
-    println("Blocking code finished")
+suspend fun cookRice(){
+    delay(3000L.milliseconds)
 }
 
-suspend fun suspendingCode() {
-    (1..50_000_000).forEach { it * it }
-    println("Suspending code finished")
+suspend fun cookChicken(){
+    delay(4000L.milliseconds)
 }
