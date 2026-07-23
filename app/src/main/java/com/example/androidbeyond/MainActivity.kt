@@ -18,5 +18,13 @@ class MainActivity : ComponentActivity() {
                 HomeScreen()
             }
         }
+        println("Start")
+        blockingCode()
+        println("End")
     }
+}
+
+fun blockingCode() {
+    (1..50_000_000).forEach { it * it }
+    println("Blocking code finished")
 }
