@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainActivity : ComponentActivity() {
@@ -23,12 +24,16 @@ class MainActivity : ComponentActivity() {
                 HomeScreen()
             }
         }
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             println("Strat")
-            firstJob()
-            println("First job is Done")
-            secondJob()
-            println("Second job is Done")
+            withContext(Dispatchers.Default) {
+                firstJob()
+                println("First job is Done")
+            }
+            withContext(Dispatchers.IO) {
+                secondJob()
+                println("Second job is Done")
+            }
             println("End")
         }
     }
