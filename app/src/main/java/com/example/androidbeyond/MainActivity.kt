@@ -8,11 +8,14 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 import com.example.androidbeyond.view.HomeScreen
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainActivity : ComponentActivity() {
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -22,7 +25,7 @@ class MainActivity : ComponentActivity() {
                 HomeScreen()
             }
         }
-        lifecycleScope.launch {
+        GlobalScope.launch {
             println("Strat")
             firstJob()
             println("First job is done")
