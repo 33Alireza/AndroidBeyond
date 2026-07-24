@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
                 HomeScreen()
             }
         }
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             println("Strat")
             firstJob()
             println("First job is Done")
