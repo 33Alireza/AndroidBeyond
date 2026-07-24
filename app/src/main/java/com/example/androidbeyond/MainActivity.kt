@@ -8,12 +8,16 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 import com.example.androidbeyond.view.HomeScreen
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainActivity : ComponentActivity() {
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -25,16 +29,15 @@ class MainActivity : ComponentActivity() {
         }
         CoroutineScope(Dispatchers.Main).launch {
             println("Start")
-            launch {
-                firstJob()
-                println("First job done")
-            }
-            launch {
-
-                secondJob()
-                println("Second job done")
-            }
+            firstJob()
+            println("First job done")
+            secondJob()
+            println("Second job done")
             println("End")
+        }
+        val deferred = GlobalScope.async {
+            delay(3000L.milliseconds)
+            32
         }
     }
 }
