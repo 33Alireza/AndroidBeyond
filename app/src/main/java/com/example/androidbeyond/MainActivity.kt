@@ -24,23 +24,20 @@ class MainActivity : ComponentActivity() {
             }
         }
         CoroutineScope(Dispatchers.Main).launch {
-            println("We're starting to cook")
-            launch {
-                cookRice()
-                println("We're done with the rice")
-            }
-            launch {
-                cookChicken()
-                println("We're done with the dish")
-            }
+            println("Start")
+            firstJob()
+            println("First job done")
+            secondJob()
+            println("Second job done")
+            println("End")
         }
     }
 }
 
-suspend fun cookRice() {
+suspend fun firstJob() {
     delay(3000L.milliseconds)
 }
 
-suspend fun cookChicken() {
+suspend fun secondJob() {
     delay(4000L.milliseconds)
 }
