@@ -27,17 +27,13 @@ class MainActivity : ComponentActivity() {
                 HomeScreen()
             }
         }
-        CoroutineScope(Dispatchers.Main).launch {
-            println("Start")
-            firstJob()
-            println("First job done")
-            secondJob()
-            println("Second job done")
-            println("End")
-        }
         val deferred = GlobalScope.async {
             delay(3000L.milliseconds)
             32
+        }
+        CoroutineScope(Dispatchers.Main).launch {
+            val result = deferred.await()
+            println(result)
         }
     }
 }
