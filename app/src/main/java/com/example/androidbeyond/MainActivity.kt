@@ -5,13 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import com.example.androidbeyond.ui.theme.AndroidBeyondTheme
 import com.example.androidbeyond.view.HomeScreen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainActivity : ComponentActivity() {
@@ -24,16 +22,12 @@ class MainActivity : ComponentActivity() {
                 HomeScreen()
             }
         }
-        CoroutineScope(Dispatchers.Main).launch {
+        lifecycleScope.launch {
             println("Strat")
-            withContext(Dispatchers.Default) {
-                firstJob()
-                println("First job is Done")
-            }
-            withContext(Dispatchers.IO) {
-                secondJob()
-                println("Second job is Done")
-            }
+            firstJob()
+            println("First job is done")
+            secondJob()
+            println("Second job is done")
             println("End")
         }
     }
