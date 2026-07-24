@@ -9,19 +9,33 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
-@SuppressLint("StateFlowValueCalledInComposition")
+@SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
+    coroutineScope.launch {
+        println("Strat")
+        firstJob()
+        println("First job is done")
+        secondJob()
+        println("Second job is done")
+        println("End")
+    }
+
     Scaffold(
-        modifier = modifier,
-        contentWindowInsets = WindowInsets.safeDrawing
+        modifier = modifier, contentWindowInsets = WindowInsets.safeDrawing
     ) { innerPadding ->
         LazyColumn(
             contentPadding = innerPadding,
@@ -43,4 +57,13 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     HomeScreen()
+}
+
+
+suspend fun firstJob() {
+    delay(3000L.milliseconds)
+}
+
+suspend fun secondJob() {
+    delay(4000L.milliseconds)
 }
