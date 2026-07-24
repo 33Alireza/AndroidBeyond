@@ -25,10 +25,15 @@ class MainActivity : ComponentActivity() {
         }
         CoroutineScope(Dispatchers.Main).launch {
             println("Start")
-            firstJob()
-            println("First job done")
-            secondJob()
-            println("Second job done")
+            launch {
+                firstJob()
+                println("First job done")
+            }
+            launch {
+
+                secondJob()
+                println("Second job done")
+            }
             println("End")
         }
     }
