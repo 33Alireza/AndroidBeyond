@@ -1,39 +1,54 @@
 package com.example.androidbeyond.view
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.androidbeyond.viewmodel.HomeViewModel
 
-@SuppressLint("StateFlowValueCalledInComposition", "CoroutineCreationDuringComposition")
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel()
 ) {
-    Scaffold(
-        modifier = modifier, contentWindowInsets = WindowInsets.safeDrawing
-    ) { innerPadding ->
-        LazyColumn(
-            contentPadding = innerPadding,
-        ) {
-            items(100) {
-                Text(
-                    text = "Android",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                )
+    val counter = viewModel.counter.collectAsStateWithLifecycle().value
+    var isRunning by rememberSaveable { mutableStateOf(false) }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(counter.toString())
+        Button(
+            onClick = {
+                if (!isRunning) {
+                    viewModel.startCounting()
+                    isRunning = true
+                } else {
+                    viewModel.pauseCounting()
+                    isRunning = false
+                }
             }
+        ) {
+            Text(
+                text = if (!isRunning) "Start" else "Pause"
+            )
         }
     }
 }
