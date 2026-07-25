@@ -2,7 +2,6 @@ package com.example.androidbeyond.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,36 +11,36 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 class HomeViewModel : ViewModel() {
-    private var _counter = MutableStateFlow(0.0)
+    private var _counter = MutableStateFlow(0L)
     val counter = _counter.asStateFlow()
 
     private var job: Job? = null
 
-    private val _lapsList = MutableStateFlow<List<Double>>(emptyList())
+    private val _lapsList = MutableStateFlow<List<Long>>(emptyList())
     val lapsList = _lapsList.asStateFlow()
 
     fun startCounting() {
         if (job?.isActive == true) return
-        job = viewModelScope.launch(Dispatchers.Default) {
+        job = viewModelScope.launch {
             while (isActive) {
-                delay(1000.milliseconds)
-                _counter.value += 0.1
+                delay(100.milliseconds)
+                _counter.value += 100
             }
         }
     }
 
     fun stopCounting() {
-        viewModelScope.launch {
-            job?.cancel()
-            job = null
-        }
+        job?.cancel()
+        job = null
     }
 
     fun resetCounter() {
-        _counter.value = 0.0
+        stopCounting()
+        _counter.value = 0L
+        _lapsList.value = emptyList()
     }
 
-    fun initLap(lap: Double) {
+    fun initLap(lap: Long) {
         _lapsList.value += lap
     }
 }
