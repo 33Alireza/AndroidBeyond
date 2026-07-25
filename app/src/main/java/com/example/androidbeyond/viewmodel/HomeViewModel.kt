@@ -17,6 +17,9 @@ class HomeViewModel : ViewModel() {
 
     private var job: Job? = null
 
+    private val _lapsList = MutableStateFlow<List<Int>>(emptyList())
+    val lapsList = _lapsList.asStateFlow()
+
     fun startCounting() {
         if (job?.isActive == true) return
         job = viewModelScope.launch(Dispatchers.Default) {
@@ -32,5 +35,13 @@ class HomeViewModel : ViewModel() {
             job?.cancel()
             job = null
         }
+    }
+
+    fun resetCounter() {
+        _counter.value = 0
+    }
+
+    fun initLap(lap: Int) {
+        _lapsList.value += lap
     }
 }
