@@ -21,24 +21,18 @@ class HomeViewModel : ViewModel() {
 
     private var job: Job? = null
 
-    fun loadDashboardDate() {
-        _isLoading.value = true
+    fun loadDashboardData() {
+        job?.cancel()
         job = viewModelScope.launch {
+            _isLoading.value = true
             try {
-                launch {
-                    withContext(Dispatchers.IO) {
-                        val profileDeferred = async { fetchUserProfile() }
-                        val profile = profileDeferred.await()
-                        _dashboardData.value?.userName = profile
-                    }
-                }
-                launch {
-                    withContext(Dispatchers.IO) {
-                        val ordersDeferred = async { fetchRecentOrders() }
-                        val orders = ordersDeferred.await()
-                        _dashboardData.value?.orderCount = orders
-                    }
-                }
+                val profileDeferred = async { fetchUserProfile() }
+                val ordersDeferred = async { fetchRecentOrders() }
+
+                val profile = profileDeferred.await()
+                val orders = ordersDeferred.await()
+
+                _dashboardData.value = DashboardData(profile, orders)
             } catch (e: Exception) {
                 println(e.message ?: "Unknown Error")
             } finally {
@@ -46,19 +40,19 @@ class HomeViewModel : ViewModel() {
             }
         }
     }
+
+    private suspend fun fetchUserProfile(): String = withContext(Dispatchers.IO) {
+        delay(1500.milliseconds)
+        "Alireza"
+    }
+
+    private suspend fun fetchRecentOrders(): Int = withContext(Dispatchers.IO) {
+        delay(2000.milliseconds)
+        7
+    }
 }
 
 data class DashboardData(
-    var userName: String,
-    var orderCount: Int,
+    val userName: String,
+    val orderCount: Int,
 )
-
-private suspend fun fetchUserProfile(): String {
-    delay(1500.milliseconds)
-    return "Alireza"
-}
-
-private suspend fun fetchRecentOrders(): Int {
-    delay(2000.milliseconds)
-    return 7
-}
