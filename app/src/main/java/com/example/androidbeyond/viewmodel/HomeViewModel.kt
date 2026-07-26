@@ -15,7 +15,11 @@ class HomeViewModel : ViewModel() {
     private val _dashboardData = MutableStateFlow<DashboardData?>(null)
     val dashboardData = _dashboardData.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
     fun loadDashboardDate() {
+        _isLoading.value = true
         viewModelScope.launch {
             try {
                 launch {
@@ -34,6 +38,8 @@ class HomeViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 println(e.message ?: "Unknown Error")
+            } finally {
+                _isLoading.value = false
             }
         }
     }
