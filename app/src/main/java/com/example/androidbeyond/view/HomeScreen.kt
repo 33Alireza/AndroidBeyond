@@ -32,8 +32,7 @@ import com.example.androidbeyond.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel()
+    modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel()
 ) {
     val counter = viewModel.counter.collectAsStateWithLifecycle().value
     var uiState by rememberSaveable { mutableStateOf(UiState.Start) }
@@ -58,94 +57,72 @@ fun HomeScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            when (uiState) {
-                UiState.Start -> {
-                    Button(
-                        modifier = Modifier
-                            .width(100.dp),
-                        onClick = {
+            Button(
+                modifier = Modifier.width(100.dp), onClick = {
+                    when (uiState) {
+                        UiState.Start -> {
                             viewModel.startCounting()
                             uiState = UiState.Stop
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF009688)
-                        )
-                    ) {
-                        Text("Start")
-                    }
-                    Spacer(modifier.width(16.dp))
-                    Button(
-                        modifier = Modifier
-                            .width(100.dp),
-                        onClick = {
-                            viewModel.initLap(counter)
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF2196F3)
-                        )
-                    ) {
-                        Text("Lap")
-                    }
-                }
+                        }
 
-                UiState.Stop -> {
-                    Button(
-                        modifier = Modifier
-                            .width(100.dp),
-                        onClick = {
+                        UiState.Stop -> {
                             viewModel.stopCounting()
                             uiState = UiState.Resume
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFE91E63)
-                        )
-                    ) {
-                        Text("Stop")
-                    }
-                    Spacer(modifier.width(16.dp))
-                    Button(
-                        modifier = Modifier
-                            .width(100.dp),
-                        onClick = {
-                            viewModel.initLap(counter)
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF2196F3)
-                        )
-                    ) {
-                        Text("Lap")
-                    }
-                }
+                        }
 
-                UiState.Resume -> {
-                    Button(
-                        modifier = Modifier
-                            .width(100.dp),
-                        onClick = {
+                        UiState.Resume -> {
                             viewModel.startCounting()
                             uiState = UiState.Stop
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF009688)
-                        )
-                    ) {
-                        Text("Resume")
+                        }
                     }
-                    Spacer(modifier.width(16.dp))
-                    Button(
-                        modifier = Modifier
-                            .width(100.dp),
-                        onClick = {
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = when (uiState) {
+                        UiState.Start -> Color(0xFF009688)
+                        UiState.Stop -> Color(0xFFE91E63)
+                        UiState.Resume -> Color(0xFF009688)
+                    }
+                )
+            ) {
+                Text(
+                    text = when (uiState) {
+                        UiState.Start -> "Start"
+                        UiState.Stop -> "Stop"
+                        UiState.Resume -> "Resume"
+                    }
+                )
+            }
+            Spacer(modifier.width(16.dp))
+            Button(
+                modifier = Modifier.width(100.dp), onClick = {
+                    when (uiState) {
+                        UiState.Start -> {
+                            viewModel.initLap(counter)
+                        }
+
+                        UiState.Stop -> {
+                            viewModel.initLap(counter)
+                        }
+
+                        UiState.Resume -> {
                             viewModel.resetCounter()
                             uiState = UiState.Start
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFFF9800)
-                        )
-                    ) {
-                        Text("Reset")
+                        }
                     }
-                }
+                }, colors = ButtonDefaults.buttonColors(
+                    containerColor = when (uiState) {
+                        UiState.Start -> Color(0xFF2196F3)
+                        UiState.Stop -> Color(0xFF2196F3)
+                        UiState.Resume -> Color(0xFFFF9800)
+                    }
+                )
+            ) {
+                Text(
+                    text = when (uiState) {
+                        UiState.Start -> "Lap"
+                        UiState.Stop -> "Lap"
+                        UiState.Resume -> "Reset"
+                    }
+                )
             }
         }
         LazyColumn(
@@ -165,9 +142,7 @@ fun HomeScreen(
 }
 
 enum class UiState {
-    Start,
-    Stop,
-    Resume
+    Start, Stop, Resume
 }
 
 @Preview
