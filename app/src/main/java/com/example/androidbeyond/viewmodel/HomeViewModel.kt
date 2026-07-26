@@ -3,6 +3,7 @@ package com.example.androidbeyond.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,9 +19,11 @@ class HomeViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
+    private var job: Job? = null
+
     fun loadDashboardDate() {
         _isLoading.value = true
-        viewModelScope.launch {
+        job = viewModelScope.launch {
             try {
                 launch {
                     withContext(Dispatchers.IO) {
