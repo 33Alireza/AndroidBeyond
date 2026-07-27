@@ -16,6 +16,11 @@ class HomeViewModel : ViewModel() {
         delay(1800.milliseconds)
         UserStats(7, 98)
     }
+
+    private suspend fun fetchLastLogin(): String = withContext(Dispatchers.IO) {
+        delay(800.milliseconds)
+        "2 hours ago"
+    }
 }
 
 data class BasicInfo(
