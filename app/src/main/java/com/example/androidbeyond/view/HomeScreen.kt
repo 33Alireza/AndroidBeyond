@@ -5,13 +5,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androidbeyond.viewmodel.HomeViewModel
@@ -22,25 +27,42 @@ fun HomeScreen(
 ) {
     val userProfile = viewModel.userProfile.collectAsStateWithLifecycle()
     val isLoading = viewModel.isLoading.collectAsStateWithLifecycle()
+    val event = viewModel.event
+    val snackBarHostState = remember { SnackbarHostState() }
+    val actionLabel = "Retry"
 
     LaunchedEffect(Unit) { viewModel.loadUserProfile() }
+    LaunchedEffect(Unit) {
+        event.collect {
+            val result = snackBarHostState.showSnackbar(
+                message = it, actionLabel = actionLabel, duration = SnackbarDuration.Long
+            )
+            if (result == SnackbarResult.ActionPerformed) {
+                viewModel.loadUserProfile()
+            }
+        }
+    }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (isLoading.value) {
-            CircularProgressIndicator()
-        } else {
-            userProfile.value?.let {
-                Text(it.name)
-                Text(it.email)
-                Text(it.posts.toString())
-                Text(it.followers.toString())
-                Text(it.lastLogin)
+    Scaffold(
+        modifier = modifier,
+        snackbarHost = { SnackbarHost(snackBarHostState) }) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (isLoading.value) {
+                CircularProgressIndicator()
+            } else {
+                userProfile.value?.let {
+                    Text(it.name)
+                    Text(it.email)
+                    Text(it.posts.toString())
+                    Text(it.followers.toString())
+                    Text(it.lastLogin)
+                }
             }
         }
     }
