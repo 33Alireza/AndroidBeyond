@@ -20,10 +20,10 @@ import com.example.androidbeyond.viewmodel.HomeViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel()
 ) {
-    val dashboardData = viewModel.dashboardData.collectAsStateWithLifecycle()
+    val userProfile = viewModel.userProfile.collectAsStateWithLifecycle()
     val isLoading = viewModel.isLoading.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) { viewModel.loadDashboardData() }
+    LaunchedEffect(Unit) { viewModel.loadUserProfile() }
 
     Column(
         modifier = modifier
@@ -35,9 +35,12 @@ fun HomeScreen(
         if (isLoading.value) {
             CircularProgressIndicator()
         } else {
-            dashboardData.value?.let {
-                Text(it.userName)
-                Text(it.orderCount.toString())
+            userProfile.value?.let {
+                Text(it.name)
+                Text(it.email)
+                Text(it.posts.toString())
+                Text(it.followers.toString())
+                Text(it.lastLogin)
             }
         }
     }
