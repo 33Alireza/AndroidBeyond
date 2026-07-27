@@ -11,11 +11,21 @@ class HomeViewModel : ViewModel() {
         delay(1200.milliseconds)
         BasicInfo("Alireza", "alireza@gmail.com")
     }
+
+    private suspend fun fetchUserStats(): UserStats = withContext(Dispatchers.IO) {
+        delay(1800.milliseconds)
+        UserStats(7, 98)
+    }
 }
 
 data class BasicInfo(
     val name: String,
     val email: String
+)
+
+data class UserStats(
+    val posts: Int,
+    val followers: Int
 )
 
 data class UserProfile(
