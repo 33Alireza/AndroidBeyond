@@ -25,20 +25,20 @@ import com.example.androidbeyond.viewmodel.HomeViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel()
 ) {
-    val userProfile = viewModel.userProfile.collectAsStateWithLifecycle()
+    val product = viewModel.product.collectAsStateWithLifecycle()
     val isLoading = viewModel.isLoading.collectAsStateWithLifecycle()
     val event = viewModel.event
     val snackBarHostState = remember { SnackbarHostState() }
     val actionLabel = "Retry"
 
-    LaunchedEffect(Unit) { viewModel.loadUserProfile() }
+    LaunchedEffect(Unit) { viewModel.loadProductDetails() }
     LaunchedEffect(Unit) {
         event.collect {
             val result = snackBarHostState.showSnackbar(
                 message = it, actionLabel = actionLabel, duration = SnackbarDuration.Long
             )
             if (result == SnackbarResult.ActionPerformed) {
-                viewModel.loadUserProfile()
+                viewModel.loadProductDetails()
             }
         }
     }
@@ -56,12 +56,12 @@ fun HomeScreen(
             if (isLoading.value) {
                 CircularProgressIndicator()
             } else {
-                userProfile.value?.let {
-                    Text(it.name)
-                    Text(it.email)
-                    Text(it.posts.toString())
-                    Text(it.followers.toString())
-                    Text(it.lastLogin)
+                product.value?.let {
+                    Text(it.info.name)
+                    Text(it.info.price.toString())
+                    Text(it.info.description)
+                    Text(it.reviews.joinToString(", "))
+                    Text(it.relatedProducts.joinToString(", "))
                 }
             }
         }
