@@ -31,6 +31,15 @@ class HomeViewModel : ViewModel() {
             ProductInfo("MacBook Pro M5", 2.000, "16GB, 512GB, 14Inch")
         }
     }
+
+    private suspend fun fetchReviews(): List<String> = withContext(Dispatchers.IO) {
+        delay(15000.milliseconds)
+        if ((1..100).random() > 80) {
+            throw Exception("Yo!")
+        } else {
+            listOf("Best Laptop ever", "Apple's finest")
+        }
+    }
 }
 
 data class ProductDetails(
