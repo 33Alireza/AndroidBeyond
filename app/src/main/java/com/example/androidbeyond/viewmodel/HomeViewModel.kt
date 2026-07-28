@@ -40,6 +40,15 @@ class HomeViewModel : ViewModel() {
             listOf("Best Laptop ever", "Apple's finest")
         }
     }
+
+    private suspend fun fetchRelatedProducts(): List<String> = withContext(Dispatchers.IO) {
+        delay(1200.milliseconds)
+        if ((1..100).random() > 80) {
+            throw Exception("Yo!")
+        } else {
+            listOf("MacBook Air M5", "MAcBook Neo")
+        }
+    }
 }
 
 data class ProductDetails(
