@@ -6,6 +6,12 @@ class HomeViewModel : ViewModel() {
 
 }
 
+data class ProductDetails(
+    val info: ProductInfo,
+    val reviews: List<String>,
+    val relatedProducts: List<String>
+)
+
 data class ProductInfo(
     val name: String,
     val price: Double,
