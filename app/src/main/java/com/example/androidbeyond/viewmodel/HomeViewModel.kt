@@ -2,9 +2,10 @@ package com.example.androidbeyond.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -24,13 +25,24 @@ class HomeViewModel : ViewModel() {
         collectFlow()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun collectFlow() {
+        val flowOne = flow {
+            emit(1)
+            delay(500L.milliseconds)
+            emit(2)
+        }
+
         viewModelScope.launch {
-            val reduceResult = countDownFlow
-                .fold(100) { accumulator, value ->
-                    accumulator + value
+            flowOne.flatMapConcat { value ->
+                flow {
+                    emit(value + 1)
+                    delay(500L.milliseconds)
+                    emit(value + 2)
                 }
-            println(reduceResult)
+            }.collect { value ->
+                println("The Value is $value")
+            }
         }
     }
 }
