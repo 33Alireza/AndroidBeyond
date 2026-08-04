@@ -6,6 +6,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -33,6 +34,9 @@ class HomeViewModel : ViewModel() {
                 }
                 .map { time ->
                     time * time
+                }
+                .onEach { time ->
+                    println(time)
                 }
                 .collect { time ->
                     println("The current time is $time")
