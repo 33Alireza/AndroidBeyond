@@ -1,8 +1,10 @@
 package com.example.androidbeyond.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 class HomeViewModel : ViewModel() {
@@ -14,6 +16,18 @@ class HomeViewModel : ViewModel() {
             delay(1000L.milliseconds)
             currentValue--
             emit(currentValue)
+        }
+    }
+
+    init {
+        collectFlow()
+    }
+
+    private fun collectFlow() {
+        viewModelScope.launch {
+            countDownFlow.collect { time ->
+                println("The current time is $time")
+            }
         }
     }
 }
