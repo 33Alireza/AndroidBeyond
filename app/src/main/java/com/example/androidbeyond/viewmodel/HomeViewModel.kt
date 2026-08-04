@@ -4,33 +4,48 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 class HomeViewModel : ViewModel() {
-    private val _sharedFlow = MutableSharedFlow<Int>(replay = 5)
-    val sharedFlow = _sharedFlow.asSharedFlow()
-
-    init {
-        viewModelScope.launch {
-            sharedFlow.collect {
-                delay(2000.milliseconds)
-                println("FIRST FLOW: The received number is $it")
-            }
+    private val counterFlow = flow {
+        var count = 0
+        while (true) {
+            emit(count++)
+            delay(1000.milliseconds)
         }
-        viewModelScope.launch {
-            sharedFlow.collect {
-                delay(3000.milliseconds)
-                println("SECOND FLOW: The received number is $it")
-            }
-        }
-        squareNumber(3)
     }
 
-    fun squareNumber(number: Int) {
+    val counter: StateFlow<Int> = counterFlow
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = 0
+        )
+
+    private val _events = MutableSharedFlow<String>()
+    val events = _events.asSharedFlow()
+
+    val message: SharedFlow<String> = flow {
+        emit("Hello")
+        delay(2000.milliseconds)
+        emit("World")
+    }.shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        replay = 0
+    )
+
+    fun sendEvent(message: String) {
         viewModelScope.launch {
-            _sharedFlow.emit(number * number)
+            _events.emit(message)
         }
     }
 }
