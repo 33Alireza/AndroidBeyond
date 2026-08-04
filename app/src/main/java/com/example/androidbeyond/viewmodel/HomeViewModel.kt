@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -27,6 +28,10 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun collectFlow() {
+        countDownFlow.onEach {
+            println(it)
+        }.launchIn(viewModelScope)
+
         viewModelScope.launch {
             countDownFlow
                 .filter { time ->
