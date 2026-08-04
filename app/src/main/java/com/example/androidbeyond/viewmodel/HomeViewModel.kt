@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
@@ -34,7 +34,7 @@ class HomeViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-            flowOne.flatMapMerge { value ->
+            flowOne.flatMapLatest { value ->
                 flow {
                     emit(value + 1)
                     delay(500L.milliseconds)
