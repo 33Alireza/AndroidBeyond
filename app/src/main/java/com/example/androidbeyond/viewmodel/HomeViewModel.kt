@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -29,6 +30,9 @@ class HomeViewModel : ViewModel() {
             countDownFlow
                 .filter { time ->
                     time % 2 == 0
+                }
+                .map { time ->
+                    time * time
                 }
                 .collect { time ->
                     println("The current time is $time")
