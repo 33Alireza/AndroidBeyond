@@ -3,7 +3,7 @@ package com.example.androidbeyond.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -38,7 +38,7 @@ class HomeViewModel : ViewModel() {
             flow.onEach {
                 println("FLOW: $it is delivered")
             }
-                .buffer()
+                .conflate()
                 .collect {
                     println("FLOW: Now eating $it")
                     delay(1500.milliseconds)
