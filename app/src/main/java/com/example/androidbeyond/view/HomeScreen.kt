@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +19,7 @@ import com.example.androidbeyond.viewmodel.HomeViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel()
 ) {
-    val time = viewModel.countDownFlow.collectAsStateWithLifecycle(10)
+    val count = viewModel.stateFlow.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
@@ -27,9 +28,11 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = time.value.toString()
-        )
+        Button(
+            onClick = { viewModel.increaseCounter() }
+        ) {
+            Text("Counter: ${count.value}")
+        }
     }
 }
 
