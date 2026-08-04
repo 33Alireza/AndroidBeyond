@@ -2,10 +2,10 @@ package com.example.androidbeyond.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -25,24 +25,25 @@ class HomeViewModel : ViewModel() {
         collectFlow()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private fun collectFlow() {
-        val flowOne = flow {
-            emit(1)
-            delay(500L.milliseconds)
-            emit(2)
+        val flow = flow {
+            delay(250.milliseconds)
+            emit("Appetizer")
+            delay(1000.milliseconds)
+            emit("Main Dish")
+            delay(100.milliseconds)
+            emit("Desert")
         }
-
         viewModelScope.launch {
-            flowOne.flatMapLatest { value ->
-                flow {
-                    emit(value + 1)
-                    delay(500L.milliseconds)
-                    emit(value + 2)
-                }
-            }.collect { value ->
-                println("The Value is $value")
+            flow.onEach {
+                println("FLOW: $it is delivered")
             }
+                .buffer()
+                .collect {
+                    println("FLOW: Now eating $it")
+                    delay(1500.milliseconds)
+                    println("FLOW: Finished eating $it")
+                }
         }
     }
 }
