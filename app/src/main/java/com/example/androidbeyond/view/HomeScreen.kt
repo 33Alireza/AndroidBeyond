@@ -2,8 +2,11 @@ package com.example.androidbeyond.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -13,6 +16,7 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,21 +30,20 @@ import com.example.androidbeyond.viewmodel.HomeViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel()
 ) {
-    val me = viewModel.me.collectAsStateWithLifecycle()
-    val isLoading = viewModel.isLoading.collectAsStateWithLifecycle()
+    val currentNumber by viewModel.currentNumber.collectAsStateWithLifecycle()
+    val isRunning by viewModel.isRunning.collectAsStateWithLifecycle()
     val event = viewModel.event
     val snackBarState = remember { SnackbarHostState() }
     val actionLabel = "Retry"
 
-    LaunchedEffect(Unit) { viewModel.loadMe() }
-    LaunchedEffect(Unit) {
-        event.collect {
+    LaunchedEffect(currentNumber) {
+        event.collect { message ->
             val result = snackBarState.showSnackbar(
-                message = "Yo",
+                message = message,
                 actionLabel = actionLabel,
                 duration = SnackbarDuration.Indefinite
             )
-            if (result == SnackbarResult.ActionPerformed) viewModel.loadMe()
+            if (result == SnackbarResult.ActionPerformed) viewModel.startCounting()
         }
     }
 
@@ -56,14 +59,32 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (isLoading.value) {
-                CircularProgressIndicator()
-            } else {
-                me.value?.movies?.joinToString(", ")?.let { Text(it) }
-                me.value?.dev?.joinToString(", ")?.let { Text(it) }
-                me.value?.musics?.joinToString(", ")?.let { Text(it) }
-                me.value?.games?.joinToString(", ")?.let { Text(it) }
-                me.value?.tech?.joinToString(", ")?.let { Text(it) }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                if (isRunning) CircularProgressIndicator()
+                else {
+                    Text(currentNumber.toString())
+                }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Button(
+                    onClick = { viewModel.startCounting() }
+                ) {
+                    Text("Start")
+                }
+
+                Button(
+                    onClick = { viewModel.stopCounting() }
+                ) {
+                    Text("Stop")
+                }
             }
         }
     }
