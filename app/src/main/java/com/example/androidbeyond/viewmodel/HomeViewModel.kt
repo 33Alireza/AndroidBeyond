@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -18,12 +20,23 @@ class HomeViewModel : ViewModel() {
     private val _isRunning = MutableStateFlow(false)
     val isRunning = _isRunning.asStateFlow()
 
+    private val _event = MutableSharedFlow<String>()
+    val event = _event.asSharedFlow()
+
     var job: Job? = null
 
     fun startCounting() {
+        job?.cancel()
+        _isRunning.value = true
         job = viewModelScope.launch {
-            createNumberFlow().collect { number ->
-                _currentNumber.value = number
+            try {
+                createNumberFlow().collect { number ->
+                    _currentNumber.value = number
+                }
+            } catch (e: Exception) {
+                _event.emit(e.message ?: "Unknown Error")
+            } finally {
+                _isRunning.value = false
             }
         }
     }
