@@ -28,6 +28,13 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    fun stopCounting() {
+        job?.cancel()
+        job = null
+        _currentNumber.value = null
+        _isRunning.value = false
+    }
+
     private fun createNumberFlow(): Flow<Int> {
         return flow {
             delay(1000.milliseconds)
