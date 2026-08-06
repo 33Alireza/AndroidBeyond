@@ -23,7 +23,7 @@ class HomeViewModel : ViewModel() {
     private val _event = MutableSharedFlow<String>()
     val event = _event.asSharedFlow()
 
-    var job: Job? = null
+    private var job: Job? = null
 
     fun startCounting() {
         job?.cancel()
@@ -50,16 +50,10 @@ class HomeViewModel : ViewModel() {
 
     private fun createNumberFlow(): Flow<Int> {
         return flow {
-            delay(1000.milliseconds)
-            emit(1)
-            delay(1000.milliseconds)
-            emit(2)
-            delay(1000.milliseconds)
-            emit(3)
-            delay(1000.milliseconds)
-            emit(4)
-            delay(1000.milliseconds)
-            emit(5)
+            for (i in 1..5){
+                emit(i)
+                delay(1000.milliseconds)
+            }
         }
     }
 }
