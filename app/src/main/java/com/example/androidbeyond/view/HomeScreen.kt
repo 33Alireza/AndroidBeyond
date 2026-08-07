@@ -23,7 +23,7 @@ import com.example.androidbeyond.viewmodel.HomeViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel()
 ) {
-    val currentNumber by viewModel.currentNumber.collectAsStateWithLifecycle()
+    val currentNumber by viewModel.numberFlow.collectAsStateWithLifecycle(initialValue = 0)
     val snackBarState = remember { SnackbarHostState() }
 
     Scaffold(
