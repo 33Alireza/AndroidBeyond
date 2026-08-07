@@ -23,7 +23,8 @@ import com.example.androidbeyond.viewmodel.HomeViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel()
 ) {
-    val currentNumber by viewModel.numberFlow.collectAsStateWithLifecycle(initialValue = 0)
+    val currentNumber by viewModel.currentNumber.collectAsStateWithLifecycle()
+    val numberFlow by viewModel.numberFlow.collectAsStateWithLifecycle(initialValue = 0)
     val snackBarState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -38,7 +39,8 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(currentNumber.toString())
+            Text("StateFlow: $currentNumber")
+            Text("SharedFlow: $numberFlow")
         }
     }
 }
