@@ -24,7 +24,6 @@ fun HomeScreen(
     modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel()
 ) {
     val currentNumber by viewModel.currentNumber.collectAsStateWithLifecycle()
-    val numberFlow by viewModel.numberFlow.collectAsStateWithLifecycle(initialValue = 0)
     val snackBarState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -40,7 +39,6 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("StateFlow: $currentNumber")
-            Text("SharedFlow: $numberFlow")
         }
     }
 }
