@@ -6,14 +6,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.zip
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlin.time.Duration.Companion.milliseconds
 
 class HomeViewModel : ViewModel() {
-    val combined: StateFlow<String?> = combine(
+    val zipped: StateFlow<String?> = zip(
         createNumbersFlow(),
         createLettersFlow()
     ) { number, letter ->
