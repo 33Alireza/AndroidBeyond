@@ -23,7 +23,7 @@ import com.example.androidbeyond.viewmodel.HomeViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier, viewModel: HomeViewModel = viewModel()
 ) {
-    val result by viewModel.result.collectAsStateWithLifecycle()
+    val searchResult by viewModel.searchResult.collectAsStateWithLifecycle()
     val snackBarState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -38,7 +38,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(result ?: "Null")
+            Text(searchResult ?: "Null")
         }
     }
 }
