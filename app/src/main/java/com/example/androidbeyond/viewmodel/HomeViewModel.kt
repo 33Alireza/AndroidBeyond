@@ -3,45 +3,31 @@ package com.example.androidbeyond.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.zip
-import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlin.time.Duration.Companion.milliseconds
 
 class HomeViewModel : ViewModel() {
-    val zipped: StateFlow<String?> = zip(
-        createNumbersFlow(),
-        createLettersFlow()
-    ) { number, letter ->
-        "$number$letter"
-    }
-        .onEach { println(it) }
+    val result: StateFlow<String?> = createNumbersFlow()
+        .map { it.toString() }
+        .catch { e ->
+            emit("Error: ${e.message}")
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = null
         )
 
-    private fun createNumbersFlow(): Flow<Int> {
-        return flow {
-            for (i in 1..5) {
-                emit(i)
-                delay(600.milliseconds)
-            }
-        }
-    }
-
-    private fun createLettersFlow(): Flow<String> {
-        val lettersList = mutableListOf("A", "B", "C", "D", "E")
-        return flow {
-            for (i in lettersList) {
-                emit(i)
-                delay(900.milliseconds)
-            }
+    private fun createNumbersFlow() = flow {
+        for (i in 1..5) {
+            if (i == 3) throw Exception("FLOW Exception")
+            else emit(i)
+            delay(1000.milliseconds)
         }
     }
 }
