@@ -8,12 +8,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.stateIn
 import kotlin.time.Duration.Companion.milliseconds
 
 class HomeViewModel : ViewModel() {
     val result: StateFlow<String?> = createNumbersFlow()
         .map { it.toString() }
+        .retry(2)
         .catch { e ->
             emit("Error: ${e.message}")
         }
