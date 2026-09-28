@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.androidbeyond.view.DetailScreen
+import com.example.androidbeyond.view.HomeScreen
 
 @Composable
 fun AppNavigation() {
@@ -12,7 +14,7 @@ fun AppNavigation() {
         navController = navController,
         startDestination = Home
     ) {
-        composable<Home> { }
-        composable<Detail> { }
+        composable<Home> { HomeScreen() }
+        composable<Detail> { DetailScreen() }
     }
 }
