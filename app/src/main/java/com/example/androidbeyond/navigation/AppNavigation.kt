@@ -11,10 +11,9 @@ import com.example.androidbeyond.view.HomeScreen
 fun AppNavigation() {
     val navController = rememberNavController()
     NavHost(
-        navController = navController,
-        startDestination = Home
+        navController = navController, startDestination = Home
     ) {
-        composable<Home> { HomeScreen() }
-        composable<Detail> { DetailScreen() }
+        composable<Home> { HomeScreen(navigateToDetailScreen = { navController.navigate(Detail(it)) }) }
+        composable<Detail> { DetailScreen(navigateToPreviousScreen = { navController.navigateUp() }) }
     }
 }
