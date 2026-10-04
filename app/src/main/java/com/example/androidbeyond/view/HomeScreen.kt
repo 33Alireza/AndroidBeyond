@@ -25,26 +25,28 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(),
 ) {
-    val numbers by viewModel.numbersList.collectAsStateWithLifecycle()
+    val movies by viewModel.movies.collectAsStateWithLifecycle()
 
-    var navigatingNumber by remember { mutableStateOf<Int?>(null) }
+    var navigatingId by remember { mutableStateOf<Int?>(null) }
 
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LazyColumn {
-            items(numbers) { number ->
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = navigatingNumber != number,
-                    onClick = {
-                        navigatingNumber = number
-                        navigateToDetailScreen(number)
+        movies?.let { movies ->
+            LazyColumn {
+                items(movies) { movie ->
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = navigatingId != movie.id,
+                        onClick = {
+                            navigatingId = movie.id
+                            navigateToDetailScreen(movie.id)
+                        }
+                    ) {
+                        Text(movie.toString())
                     }
-                ) {
-                    Text(number.toString())
                 }
             }
         }
