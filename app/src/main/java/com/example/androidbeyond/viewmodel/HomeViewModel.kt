@@ -6,7 +6,6 @@ import com.example.androidbeyond.data.FakeApi
 import com.example.androidbeyond.model.Movie
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -26,18 +25,23 @@ class HomeViewModel : ViewModel() {
 
     var job: Job? = null
 
-    private fun getMovies() {
+    init {
+        getMovies()
+    }
+
+    fun getMovies() {
         job?.cancel()
         job = viewModelScope.launch {
             try {
-                val referredMovies = async { FakeApi.getMovies() }
-                val movies = referredMovies.await()
-
+                isLoading.value = true
+                val movies = FakeApi.getMovies()
                 _movies.update { movies }
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 _event.emit(e.message ?: "boom!")
+            } finally {
+                isLoading.value = false
             }
         }
     }
